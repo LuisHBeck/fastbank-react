@@ -4,7 +4,8 @@ import { Container } from "./Container";
 import ImgAppleStore from "@/assets/btn-apple-store.svg";
 import ImgGooglePlay from "@/assets/btn-google-play.svg";
 import ArrowDown from "@/assets/arrow-down.svg"
-import WomanImage from "@/assets/woman.png"
+// import WomanImage from "@/assets/woman.png"
+import WomanImage from "@/assets/woman-initial.png"
 
 export function SectionHero() {
 	return (

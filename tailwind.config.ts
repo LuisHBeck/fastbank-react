@@ -13,6 +13,7 @@ const config: Config = {
 		extend: {
 			colors: {
 				"primary-blue": "#106EB0",
+				"primary-purple": "#3c2283",
 				"primary-orange": "#EC7000",
 				"primary-gray": "#33303E",
 				"second-gray": "#4E4B56",

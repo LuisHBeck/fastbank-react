@@ -6,7 +6,8 @@ import SolutionsIcon from "@/assets/icon-solutions.svg"
 import OptionsIcon from "@/assets/icon-options.svg"
 import CardIcon from "@/assets/icon-card.svg"
 
-import ImagePhone from "@/assets/phone.png"
+// import ImagePhone from "@/assets/phone.png"
+import ImagePhone from "@/assets/celphone.png"
 
 export function SectionServices() {
   return (
