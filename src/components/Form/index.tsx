@@ -1,10 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
-// import axios from 'axios';
+import axios from "axios";
 import { useCallback, useState } from "react";
 import { NextPageContext } from "next";
 import { useRouter } from "next/router";
 
 import Input from "@/components/Input";
+
+export const axiosInstance = axios.create({
+	baseURL: "http://127.0.0.1:8056/api/v1/",
+});
 
 const Auth = () => {
 	const router = useRouter();
@@ -13,7 +17,7 @@ const Auth = () => {
 	const [password, setPassword] = useState("");
 
 	const [name, setName] = useState("");
-	const [bithDate, setBirthDate] = useState("");
+	const [birthDate, setBirthDate] = useState("");
 	const [rg, setRg] = useState("");
 	const [socialName, setSocialName] = useState("");
 
@@ -31,40 +35,68 @@ const Auth = () => {
 		);
 	}, []);
 
-	// const login = useCallback(async () => {
-	//   try {
-	//     await signIn('credentials', {
-	//       email,
-	//       password,
-	//       redirect: false,
-	//       callbackUrl: '/'
-	//     });
-
-	//     router.push('/profiles');
-	//   } catch (error) {
-	//     console.log(error);
-	//   }
-	// }, [email, password, router]);
-
-	// const register = useCallback(async () => {
-	//   try {
-	//     await axios.post('/api/register', {
-	//       email,
-	//       name,
-	//       password
-	//     });
-
-	//     login();
-	//   } catch (error) {
-	//       console.log(error);
-	//   }
-	// }, [email, name, password, login]);
+	const register = useCallback(async () => {
+		try {
+			const createUser = await axiosInstance.post("auth/users/", {
+				register_number: registerNumber,
+				picture: "a",
+				password: password,
+			});
+			console.log(createUser.status);
+			if (createUser.status === 201) {
+				const userToken = await axiosInstance.post("auth/jwt/create/", {
+					register_number: registerNumber,
+					password: password,
+				});
+				console.log(userToken.data.access);
+				if (variant === "natural") {
+					const createNatural = await axiosInstance.post(
+						"natural-people/",
+						{
+							user: registerNumber,
+							name: name,
+							birth_date: birthDate,
+							cpf: registerNumber,
+							rg: rg,
+							social_name: socialName
+						},
+						{
+							headers: {
+								Authorization: `Bearer ${userToken.data.access}`,
+							},
+						}
+					);
+					console.log(createNatural.status);
+				}
+				if (variant === "legal") {
+					const createLegal = await axiosInstance.post("legal-people/",
+						{
+							user: registerNumber,
+							fantasy_name: fantasyName,
+							establishment_date: establishmentDate,
+							cnpj: registerNumber,
+							municipal_registration: municipalRegistration,
+							state_registration: stateRegistration,
+							legal_nature: legalNature,
+						},
+						{
+							headers: {
+								Authorization: `Bearer ${userToken.data.access}`,
+							},
+						}
+					);
+				}
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}, [registerNumber, password, variant, name, birthDate, rg, socialName, fantasyName, establishmentDate, municipalRegistration, stateRegistration, legalNature]);
 
 	return (
-		<div className="relative h-full w-full bg-[url('/images/hero.jpg')] bg-no-repeat bg-center bg-fixed bg-cover">
+		<div className="relative h-full w-full bg-no-repeat bg-center bg-fixed bg-cover">
 			<div className="bg-black w-full h-full lg:bg-opacity-50">
 				<nav className="px-12 py-5">
-					<img src="/images/logo.png" className="h-12" alt="Logo" />
+					{/* <img src="/images/logo.png" className="h-12" alt="Logo" /> */}
 				</nav>
 				<div className="flex justify-center">
 					<div className="bg-black bg-opacity-70 px-16 py-16 self-center mt-2 lg:w-2/5 lg:max-w-md rounded-md w-full">
@@ -98,8 +130,8 @@ const Auth = () => {
 									<Input
 										id="birth"
 										type="text"
-										label="Birth aa/mm/dd"
-										value={bithDate}
+										label="Birth date"
+										value={birthDate}
 										onChange={(e: any) => setBirthDate(e.target.value)}
 									/>
 									<Input
@@ -161,7 +193,7 @@ const Auth = () => {
 							)}
 						</div>
 						<button
-							onClick={() => {}}
+							onClick={register}
 							className="bg-red-600 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition"
 						>
 							Register
