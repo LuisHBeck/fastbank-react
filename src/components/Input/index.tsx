@@ -1,33 +1,72 @@
-interface Props {
-	name: string;
-	label: string;
+import React from "react";
+
+interface InputProps {
+	id: string;
+	onChange: any;
 	value: string;
+	label: string;
+	type?: string;
 	error?: string;
-  type?: string;
-	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function Input({
-	name,
-	error = "",
-	value,
-	label = "",
+const Input: React.FC<InputProps> = ({
+	id,
 	onChange,
-  type = "text"
-}: Props) {
+	value,
+	label,
+	type,
+	error,
+}) => {
 	return (
-		<div>
-			<label className="text-zinc-100 mb-1">
+		<div className="relative">
+			<input
+				onChange={onChange}
+				value={value}
+				type={type}
+				id={id}
+				className="
+        block
+        rounded-md
+        px-6
+        pt-6
+        pb-1
+        w-full
+        text-md
+      text-white
+      bg-neutral-700
+        appearance-none
+        focus:outline-none
+        focus:ring-0
+        peer
+        invalid:border-b-1
+        "
+				placeholder=" "
+			/>
+			<label
+				htmlFor={id}
+				className="
+        absolute 
+        text-md
+      text-zinc-400
+        duration-150 
+        transform 
+        -translate-y-3 
+        scale-75 
+        top-4 
+        z-10 
+        origin-[0] 
+        left-6
+        peer-placeholder-shown:scale-100 
+        peer-placeholder-shown:translate-y-0 
+        peer-focus:scale-75
+        peer-focus:-translate-y-3
+      "
+			>
 				{label}
-				<input
-          type={type}
-					className="w-full p-2 outline-none rounded-sm bg-transparent border-2 border-zinc-100 text-zinc-100"
-					name={name}
-					value={value}
-					onChange={onChange}
-				/>
 			</label>
 			{error && <span className="text-red-500">{error}</span>}
 		</div>
 	);
-}
+};
+
+export default Input;
