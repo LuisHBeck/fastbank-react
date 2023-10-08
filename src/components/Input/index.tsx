@@ -21,7 +21,7 @@ export default function Input({
 				{label}
 				<input
           type={type}
-					className="w-full p-2 outline-none rounded-sm bg-transparent border-zinc-100 text-zinc-100"
+					className="w-full p-2 outline-none rounded-sm bg-transparent border-2 border-zinc-100 text-zinc-100"
 					name={name}
 					value={value}
 					onChange={onChange}
