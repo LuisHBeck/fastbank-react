@@ -7,6 +7,7 @@ interface InputProps {
 	label: string;
 	type?: string;
 	error?: string;
+	maxLength?: number;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -16,6 +17,7 @@ const Input: React.FC<InputProps> = ({
 	label,
 	type,
 	error,
+	maxLength,
 }) => {
 	return (
 		<div className="relative">
@@ -24,6 +26,7 @@ const Input: React.FC<InputProps> = ({
 				value={value}
 				type={type}
 				id={id}
+        maxLength={maxLength}
 				className="
         block
         rounded-md

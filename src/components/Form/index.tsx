@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import axios from "axios";
-import { useCallback, useState } from "react";
+import axios from "axios"
+import { useCallback, useState} from "react";
 import { NextPageContext } from "next";
-import { useRouter } from "next/router";
+import { useRouter} from "next/router";
+
 
 import Input from "@/components/Input";
 
@@ -35,7 +36,9 @@ const Auth = () => {
 		);
 	}, []);
 
-	const register = useCallback(async () => {
+
+	const registerAccount = useCallback(async () => {
+		
 		try {
 			const createUser = await axiosInstance.post("auth/users/", {
 				register_number: registerNumber,
@@ -50,6 +53,7 @@ const Auth = () => {
 				});
 				console.log(userToken.data.access);
 				if (variant === "natural") {
+					console.log(birthDate)
 					const createNatural = await axiosInstance.post(
 						"natural-people/",
 						{
@@ -109,8 +113,10 @@ const Auth = () => {
 								type="text"
 								label="Register Number"
 								value={registerNumber}
-								onChange={(e: any) => setRegisterNumber(e.target.value)}
+								onChange={(e: any) => {if(/^\d+$/.test(e.target.value)){setRegisterNumber(e.target.value)}}}
+								maxLength={14}
 							/>
+							
 							<Input
 								type="password"
 								id="password"
@@ -129,7 +135,7 @@ const Auth = () => {
 									/>
 									<Input
 										id="birth"
-										type="text"
+										type="date"
 										label="Birth date"
 										value={birthDate}
 										onChange={(e: any) => setBirthDate(e.target.value)}
@@ -139,7 +145,8 @@ const Auth = () => {
 										type="text"
 										label="RG"
 										value={rg}
-										onChange={(e: any) => setRg(e.target.value)}
+										onChange={(e: any) => {if(/^\d+$/.test(e.target.value)){setRg(e.target.value)}}}
+										maxLength={9}
 									/>
 									<Input
 										id="socialName"
@@ -171,16 +178,15 @@ const Auth = () => {
 										type="text"
 										label="Municipal Registration"
 										value={municipalRegistration}
-										onChange={(e: any) =>
-											setMunicipalRegistration(e.target.value)
-										}
+										onChange={(e: any) => {if(/^\d+$/.test(e.target.value)){setMunicipalRegistration(e.target.value)}}}
+										maxLength={11}
 									/>
 									<Input
 										id="stateRegistration"
 										type="text"
 										label="State Registration"
 										value={stateRegistration}
-										onChange={(e: any) => setStateRegistration(e.target.value)}
+										onChange={(e: any) => {if(/^\d+$/.test(e.target.value)){setMunicipalRegistration(e.target.value)}}}
 									/>
 									<Input
 										id="legalNature"
@@ -193,7 +199,7 @@ const Auth = () => {
 							)}
 						</div>
 						<button
-							onClick={register}
+							onClick={registerAccount}
 							className="bg-red-600 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition"
 						>
 							Register
