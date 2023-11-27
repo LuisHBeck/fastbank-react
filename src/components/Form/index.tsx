@@ -3,12 +3,13 @@ import axios from "axios"
 import { useCallback, useState} from "react";
 import { NextPageContext } from "next";
 import { useRouter} from "next/router";
+import Swal from 'sweetalert2'
 
 
 import Input from "@/components/Input";
 
 export const axiosInstance = axios.create({
-	baseURL: "http://127.0.0.1:8056/api/v1/",
+	baseURL: "http://10.109.71.6:8056/api/v1/",
 });
 
 const Auth = () => {
@@ -42,7 +43,7 @@ const Auth = () => {
 		try {
 			const createUser = await axiosInstance.post("auth/users/", {
 				register_number: registerNumber,
-				picture: "a",
+				// picture: "a",
 				password: password,
 			});
 			console.log(createUser.status);
@@ -70,6 +71,13 @@ const Auth = () => {
 							},
 						}
 					);
+					if (createNatural.status === 201) {
+						Swal.fire({
+							title: "Good job!",
+							text: "You're successfully registered",
+							icon: "success"
+							});
+					}
 					console.log(createNatural.status);
 				}
 				if (variant === "legal") {
